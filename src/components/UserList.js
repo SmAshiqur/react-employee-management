@@ -2,7 +2,8 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
 const columns = [
   { field: "empID", headerName: "ID", width: 70 },
   { field: "firstName", headerName: "First name", width: 130 },
@@ -70,6 +71,9 @@ export default function UserList({ employeeType }) {
 
   return (
     <div style={{ height: "100%", width: "100%" }}>
+      <Button variant="outlined" startIcon={<AddIcon />}>
+        Add User
+      </Button>
       <DataGrid
         rows={rows}
         getRowId={(row) => row.empID}

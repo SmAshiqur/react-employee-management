@@ -2,6 +2,7 @@ import { Tab, Tabs } from "@mui/material";
 import UserList from "./components/UserList";
 import { useState } from "react";
 import TabPanel from "./components/TabPanel";
+import UserForm from "./components/UserForm";
 
 function App() {
   const [value, setValue] = useState(0);
@@ -21,6 +22,7 @@ function App() {
       <TabPanel value={value} index={1}>
         <UserList employeeType="Employee" />
       </TabPanel>
+      <UserForm />
     </div>
   );
 }
