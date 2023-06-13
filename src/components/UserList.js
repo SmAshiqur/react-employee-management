@@ -43,7 +43,7 @@ const columns = [
   },
 ];
 
-export default function UserList() {
+export default function UserList({ employeeType }) {
   const [users, setUsers] = useState([]);
   useEffect(() => {
     axios
@@ -51,11 +51,11 @@ export default function UserList() {
       .then((response) => {
         setUsers(
           response.data.readEmployeeData.filter(
-            (d) => d.employeeType === "Admin"
+            (data) => data.employeeType === employeeType
           )
         );
       });
-  }, []);
+  }, [employeeType]);
 
   const rows = users.map((userData) => ({
     empID: userData.empID,
