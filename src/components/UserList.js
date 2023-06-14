@@ -4,47 +4,24 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
-const columns = [
-  { field: "empID", headerName: "ID", width: 70 },
-  { field: "firstName", headerName: "First name", width: 130 },
-  { field: "lastName", headerName: "Last name", width: 130 },
-  {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 160,
-    valueGetter: (params) =>
-      `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-  },
-  {
-    field: "employeeType",
-    headerName: "Employee Type",
-    width: 180,
-  },
-  {
-    field: "divisionId",
-    headerName: "Division ID",
-    width: 180,
-  },
-  {
-    field: "disvision",
-    headerName: "Division",
-    width: 180,
-  },
-  {
-    field: "districeID",
-    headerName: "District ID",
-    width: 180,
-  },
-  {
-    field: "district",
-    headerName: "District",
-    width: 180,
-  },
-];
+import Modal from "./Modal";
+import { useNavigate } from "react-router-dom";
 
 export default function UserList({ employeeType }) {
+  const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleButtonClick = (id) => {
+    navigate(`/user/${id}`);
+  };
+
   const [users, setUsers] = useState([]);
   useEffect(() => {
     axios
@@ -58,6 +35,59 @@ export default function UserList({ employeeType }) {
       });
   }, [employeeType]);
 
+  const columns = [
+    { field: "empID", headerName: "ID", width: 70 },
+    { field: "firstName", headerName: "First name", width: 130 },
+    { field: "lastName", headerName: "Last name", width: 130 },
+    {
+      field: "fullName",
+      headerName: "Full name",
+      description: "This column has a value getter and is not sortable.",
+      sortable: false,
+      width: "160",
+      valueGetter: (params) =>
+        `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+    },
+    {
+      field: "employeeType",
+      headerName: "Employee Type",
+      width: 180,
+    },
+    {
+      field: "divisionId",
+      headerName: "Division ID",
+      width: 180,
+    },
+    {
+      field: "disvision",
+      headerName: "Division",
+      width: 180,
+    },
+    {
+      field: "districeID",
+      headerName: "District ID",
+      width: 180,
+    },
+    {
+      field: "district",
+      headerName: "District",
+      width: 180,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 120,
+      renderCell: (row) => (
+        <Button
+          variant="outlined"
+          onClick={() => handleButtonClick(row.row.empID)}
+        >
+          Details
+        </Button>
+      ),
+    },
+  ];
+
   const rows = users.map((userData) => ({
     empID: userData.empID,
     firstName: userData.firstName,
@@ -67,13 +97,24 @@ export default function UserList({ employeeType }) {
     disvision: userData.disvision,
     districeID: userData.districeID,
     district: userData.district,
+    actions: userData.actions,
   }));
 
   return (
-    <div style={{ height: "100%", width: "100%" }}>
-      <Button variant="outlined" startIcon={<AddIcon />}>
-        Add User
-      </Button>
+    <div
+      className="mx-auto max-w-screen-2xl my-20"
+      style={{ height: "100%", width: "100%" }}
+    >
+      <div className="grid place-content-end">
+        <Button
+          onClick={handleClickOpen}
+          variant="outlined"
+          startIcon={<AddIcon />}
+        >
+          Add User
+        </Button>
+      </div>
+
       <DataGrid
         rows={rows}
         getRowId={(row) => row.empID}
@@ -83,8 +124,9 @@ export default function UserList({ employeeType }) {
             paginationModel: { page: 0, pageSize: 15 },
           },
         }}
-        pageSizeOptions={[5, 10]}
+        pageSizeOptions={[5, 10, 15]}
       />
+      <Modal open={open} onClose={handleClose} />
     </div>
   );
 }

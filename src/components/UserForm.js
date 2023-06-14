@@ -2,13 +2,16 @@ import { useFormik } from "formik";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import SaveIcon from "@mui/icons-material/Save";
+import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const UserForm = ({ valueFromTheActualForm }) => {
+const UserForm = () => {
   const [selectedDivision, setSelectedDivision] = useState(0);
   const [divisions, setDivisions] = useState([]);
   const [districts, setDistricts] = useState([]);
+  const [newUser, setNewUser] = useState("");
 
   useEffect(() => {
     axios
@@ -39,8 +42,16 @@ const UserForm = ({ valueFromTheActualForm }) => {
       districeID: 0,
     },
     onSubmit: (values) => {
-      //   valueFromTheActualForm(values);
-      console.log(values);
+      setNewUser(values);
+      axios
+        .post(
+          "http://59.152.62.177:8085/api/Employee/SaveEmployeeInformation",
+          newUser
+        )
+        .then((response) => {
+          console.log(response);
+        });
+      // console.log(values);
     },
   });
 
@@ -113,9 +124,9 @@ const UserForm = ({ valueFromTheActualForm }) => {
         })}
       </Select>
 
-      <button className="border p-4 bg-cyan-100" type="submit">
+      <Button type="submit" variant="outlined" startIcon={<SaveIcon />}>
         Save
-      </button>
+      </Button>
     </form>
   );
 };
