@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "./Modal";
 import { useNavigate } from "react-router-dom";
+import { GridToolbarQuickFilter } from "@mui/x-data-grid";
 
 export default function UserList({ employeeType }) {
   const [open, setOpen] = useState(false);
@@ -51,7 +52,7 @@ export default function UserList({ employeeType }) {
     {
       field: "employeeType",
       headerName: "Employee Type",
-      width: 180,
+      width: 150,
     },
     {
       field: "divisionId",
@@ -102,7 +103,7 @@ export default function UserList({ employeeType }) {
 
   return (
     <div
-      className="mx-auto max-w-screen-2xl my-20"
+      className="mx-auto max-w-full my-20"
       style={{ height: "100%", width: "100%" }}
     >
       <div className="grid place-content-end">
@@ -125,8 +126,19 @@ export default function UserList({ employeeType }) {
           },
         }}
         pageSizeOptions={[5, 10, 15]}
-      />
-      <Modal open={open} onClose={handleClose} />
+        components={{
+          Toolbar: GridToolbarQuickFilter,
+        }}
+      >
+        {(params) => (
+          <div style={{ height: "100%", width: "100%" }}>
+            {params.toolbar}
+            {params.grid}
+          </div>
+        )}
+      </DataGrid>
+
+      <Modal open={open} onClose={handleClose} title="Add User" />
     </div>
   );
 }

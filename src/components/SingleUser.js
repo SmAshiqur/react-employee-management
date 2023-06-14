@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { Button } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import Modal from "./Modal";
 
 function SingleUser() {
   const { id } = useParams();
   const [individualEmp, setIndividualEmp] = useState([]);
+  const [edit, setEdit] = useState(false);
+
+  const handleClickOpen = () => {
+    setEdit(true);
+  };
+  const handleClose = () => {
+    setEdit(false);
+  };
 
   useEffect(() => {
     axios
@@ -13,24 +24,36 @@ function SingleUser() {
       )
       .then((response) => {
         setIndividualEmp(response.data.readEmployeeData);
-        // console.log(response.data.readEmployeeData);
       });
   }, [id]);
 
   return (
-    <div className="mx-auto max-w-screen-sm border-2 my-20 p-8">
+    <div className="mx-auto max-w-screen-sm border-2 my-20 p-8 ">
       {individualEmp.map((user) => (
         <div key={user.id}>
-          <p>User Id: {user.empID}</p>
-          <p>First Name: {user.firstName}</p>
-          <p>Last Name: {user.lastName}</p>
-          <p>Employee Type: {user.employeeType}</p>
-          <p>Division Id: {user.divisionId}</p>
-          <p>District Id: {user.districeID}</p>
-          <p>Division: {user.disvision}</p>
-          <p>District: {user.district}</p>
+          <Button
+            edit={edit}
+            onClick={handleClickOpen}
+            className="float-right"
+            type="submit"
+            variant="outlined"
+            startIcon={<EditIcon />}
+          >
+            Edit
+          </Button>
+          <div className="font-mono">
+            <p>User Id: {user.empID}</p>
+            <p>First Name: {user.firstName}</p>
+            <p>Last Name: {user.lastName}</p>
+            <p>Employee Type: {user.employeeType}</p>
+            <p>Division Id: {user.divisionId}</p>
+            <p>District Id: {user.districeID}</p>
+            <p>Division: {user.disvision}</p>
+            <p>District: {user.district}</p>
+          </div>
         </div>
       ))}
+      <Modal open={edit} onClose={handleClose} title="Edit User" />
     </div>
   );
 }

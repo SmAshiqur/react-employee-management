@@ -51,33 +51,38 @@ const UserForm = () => {
         .then((response) => {
           console.log(response);
         });
-      // console.log(values);
+      console.log(values);
     },
   });
 
   return (
     <form
-      className="mx-auto max-w-screen-lg pt-20 flex flex-col"
+      className="mx-auto max-w-full p-20 flex flex-col"
       onSubmit={formik.handleSubmit}
     >
-      <TextField
-        id="firstName"
-        label="First Name"
-        name="firstName"
-        variant="outlined"
-        onChange={formik.handleChange}
-        value={formik.values.firstName}
-      />
+      <div className="flex-row mb-1">
+        <TextField
+          id="firstName"
+          label="First Name"
+          name="firstName"
+          variant="outlined"
+          onChange={formik.handleChange}
+          value={formik.values.firstName}
+        />
 
-      <TextField
-        id="lastName"
-        label="Last Name"
-        name="lastName"
-        variant="outlined"
-        onChange={formik.handleChange}
-        value={formik.values.lastName}
-      />
+        <TextField
+          id="lastName"
+          label="Last Name"
+          name="lastName"
+          variant="outlined"
+          onChange={formik.handleChange}
+          value={formik.values.lastName}
+        />
+      </div>
 
+      <MenuItem disabled value="">
+        <em>User Type</em>
+      </MenuItem>
       <Select
         value={formik.values.employeeType}
         label="Employee Type"
@@ -89,6 +94,9 @@ const UserForm = () => {
         <MenuItem value="Employee">Employee</MenuItem>
       </Select>
 
+      <MenuItem disabled value="">
+        <em>Division</em>
+      </MenuItem>
       <Select
         value={formik.values.divisionId}
         label="Division ID"
@@ -109,6 +117,9 @@ const UserForm = () => {
         })}
       </Select>
 
+      <MenuItem disabled value="">
+        <em>District</em>
+      </MenuItem>
       <Select
         value={formik.values.districeID}
         label="District ID"
@@ -124,9 +135,11 @@ const UserForm = () => {
         })}
       </Select>
 
-      <Button type="submit" variant="outlined" startIcon={<SaveIcon />}>
-        Save
-      </Button>
+      <div className="my-8 flex flex-col">
+        <Button type="submit" variant="outlined" startIcon={<SaveIcon />}>
+          Save
+        </Button>
+      </div>
     </form>
   );
 };

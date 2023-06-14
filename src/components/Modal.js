@@ -5,11 +5,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import UserForm from "./UserForm";
 
-export default function Modal({ open, onClose }) {
+export default function Modal({ open, onClose, title }) {
   return (
     <div>
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle></DialogTitle>
+        <DialogTitle className="text-center">{title}</DialogTitle>
         <DialogContent>
           <UserForm />
         </DialogContent>
