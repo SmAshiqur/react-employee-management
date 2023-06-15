@@ -5,13 +5,18 @@ import Select from "@mui/material/Select";
 import SaveIcon from "@mui/icons-material/Save";
 import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import axios from "axios";
 
-const UserForm = () => {
+const UserForm = ({ initialValues }) => {
   const [selectedDivision, setSelectedDivision] = useState(0);
   const [divisions, setDivisions] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [newUser, setNewUser] = useState("");
+
+  const isEditMode = !!initialValues;
+  const { id } = useParams();
 
   useEffect(() => {
     axios
@@ -35,30 +40,34 @@ const UserForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      employeeType: "",
-      divisionId: 0,
-      districeID: 0,
+      firstName: initialValues?.firstName || "",
+      lastName: initialValues?.lastName || "",
+      employeeType: initialValues?.employeeType || "",
+      divisionId: initialValues?.divisionId || 0,
+      districeID: initialValues?.districeID || 0,
     },
     onSubmit: (values) => {
       setNewUser(values);
-      axios
-        .post(
-          "http://59.152.62.177:8085/api/Employee/SaveEmployeeInformation",
-          newUser
-        )
-        .then((response) => {
-          console.log(JSON.stringify(response));
-        });
+      if (isEditMode) {
+        axios
+          .put(
+            `http://59.152.62.177:8085/api/Employee/UpdateEmployeeInformation/${id}`,
+            newUser
+          )
+          .then((response) => {});
+      } else {
+        axios
+          .post(
+            "http://59.152.62.177:8085/api/Employee/SaveEmployeeInformation",
+            newUser
+          )
+          .then((response) => {
+            console.log(JSON.stringify(response));
+          });
+      }
       console.log(values);
     },
   });
-
-  // const handleChange = (event) => {
-  //   formik.handleChange(event);
-  //   setNewUser(formik.values);
-  // };
 
   return (
     <form

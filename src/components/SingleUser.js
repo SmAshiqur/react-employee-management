@@ -10,6 +10,8 @@ function SingleUser() {
   const [individualEmp, setIndividualEmp] = useState([]);
   const [edit, setEdit] = useState(false);
 
+  console.log(individualEmp);
+
   const handleClickOpen = () => {
     setEdit(true);
   };
@@ -53,7 +55,12 @@ function SingleUser() {
           </div>
         </div>
       ))}
-      <Modal open={edit} onClose={handleClose} title="Edit User" />
+      <Modal
+        initialValues={individualEmp[0]}
+        open={edit}
+        onClose={handleClose}
+        title="Edit User"
+      />
     </div>
   );
 }
