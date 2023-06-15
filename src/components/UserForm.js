@@ -49,11 +49,16 @@ const UserForm = () => {
           newUser
         )
         .then((response) => {
-          console.log(response);
+          console.log(JSON.stringify(response));
         });
       console.log(values);
     },
   });
+
+  // const handleChange = (event) => {
+  //   formik.handleChange(event);
+  //   setNewUser(formik.values);
+  // };
 
   return (
     <form
